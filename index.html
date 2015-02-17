@@ -1,0 +1,107 @@
+<!doctype html>
+<html ng-app="changeCalculatorApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1.0,
+                                   maximum-scale=1.0,
+                                   user-scalable=no,
+                                   minimal-ui">
+	
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="http://cdn.kik.com/app/3.0.0/app.min.css">
+	<title>Change Counter</title>
+  </head>
+  <body>
+  <div class="app-page" data-page="home" ng-controller="ChangeController">
+ 
+  <div class="app-topbar green"> 
+	<div class="app-title">Change Counter</div>
+	<div class="app-button right" ng-click="clearAll()">Clear</div>
+  </div>
+  <div class="app-content">
+      <div class="app-section">
+	  <h3>Coins</h3>
+        <div ng-repeat="v in values_coins">
+		  <button ng-click="minus(values_coins,$index)">-</button>
+		  <input style="width:50px;"placeholder="0" type="number" ng-model="v.number"></input>
+		  <button ng-click="add(values_coins,$index)">+</button>
+          <span><b>{{v.value}}: </b>${{v.number*v.value | number : 2}}</span>
+        </div>
+		<div class="app-button">Total coin: ${{totalCoin()| number : 2}}</div>
+		</div>
+		<div class="app-section">
+	  <h3>Money</h3>
+        <div ng-repeat="v in values_paper">
+		  <button ng-click="minus(values_paper,$index)">-</button>
+		  <input style="width:50px;" placeholder="0" type="number" ng-model="v.number"></input>
+		  <button ng-click="add(values_paper,$index)">+</button>
+          <span><b>{{v.value}}: </b>${{v.number*v.value| number : 2}}</span>
+        </div>
+		<div class="app-button">Total money: ${{totalPaper()| number : 2}}</div>
+      </div>
+	  
+      <div class="app-button app-section green">Total: ${{total()| number : 2}}</div>
+   </div>
+</div>
+    <script src="http://cdn.kik.com/app/3.0.0/app.min.js"></script>
+	<script>
+	App.load('home');
+	angular.module('changeCalculatorApp', [])
+  .controller('ChangeController', ['$scope', function($scope) {
+    $scope.values_coins = [
+	{value: 0.05, number:0},
+	{value: 0.10, number:0},
+	{value: 0.25, number:0},
+	{value: 1.00, number:0},
+	{value: 2.00, number:0}];
+    $scope.values_paper = [
+	{value: 5, number:0},
+	{value: 10, number:0},
+	{value: 20, number:0},
+	{value: 50, number:0},
+	{value: 100, number:0}];
+	
+	$scope.total = function(){
+		var sum = 0;
+		angular.forEach($scope.values_coins, function(value, key) {
+		  sum += value.number * value.value;
+		});
+		angular.forEach($scope.values_paper, function(value, key) {
+		  sum += value.number * value.value;
+		});
+		return sum;
+	}
+	$scope.totalPaper = function(){
+		var sum = 0;
+		angular.forEach($scope.values_paper, function(value, key) {
+		  sum += value.number * value.value;
+		});
+		return sum;
+	}
+	$scope.totalCoin = function(){
+		var sum = 0;
+		angular.forEach($scope.values_coins, function(value, key) {
+		  sum += value.number * value.value;
+		});
+		return sum;
+	}
+	$scope.add = function (array, i){
+		array[i].number++;
+	};
+	$scope.minus = function (array, i){
+		array[i].number--;
+	};
+	$scope.clearAll = function (){
+		angular.forEach($scope.values_coins, function(value, key) {
+		  value.number = 0;
+		});
+		angular.forEach($scope.values_paper, function(value, key) {
+		  value.number = 0;
+		});
+	};
+  }]);
+	</script>
+  </body>
+</html>

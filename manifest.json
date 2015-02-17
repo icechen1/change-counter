@@ -1,0 +1,5 @@
+{
+  "name": "Change Counter",
+  "start_url": "index.html",
+  "display": "standalone"
+}
